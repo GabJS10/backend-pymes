@@ -53,6 +53,7 @@ export class AuthController {
     const token = await this.authService.getJwtToken({
       email: req.user.email,
       roles: req.user.roles,
+      id: req.user.id,
     });
 
     return {

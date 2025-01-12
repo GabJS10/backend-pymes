@@ -1,6 +1,6 @@
 import { IsString, IsNumber, IsArray,IsInt, IsOptional } from 'class-validator';
 
-export class CreateProductDto {
+export class TransformProductDto {
 
     @IsString()
     name: string;
@@ -8,17 +8,16 @@ export class CreateProductDto {
     @IsString()
     description: string;
     
-    @IsNumber()  
-    price: number;
-
-    @IsArray()
-    @IsInt({each: true})
-    sections_id: number[];
-
-    @IsInt()
-    user_bussiness_id: number;
+    @IsString()
+    price: string;
 
     @IsString()
+    sections_id: string;
+
+    @IsString()
+    @IsOptional()
     image: string;
+
+
 
 }

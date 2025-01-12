@@ -20,18 +20,18 @@ enum Role {
 }
 
 model User_bussiness {
-  id                   Int       @id @default(autoincrement())
-  name                 String    @db.VarChar(255)
-  email                String    @unique
-  password             String    @db.VarChar(60)
-  roles                Role[]    @default([])
-  name_url             String    @unique @db.VarChar(255)
+  id                   Int                  @id @default(autoincrement())
+  name                 String               @db.VarChar(255)
+  email                String               @unique
+  password             String               @db.VarChar(60)
+  roles                Role[]               @default([])
+  name_url             String               @unique @db.VarChar(255)
   holder               String
-  whatsapp_contact     String    @db.VarChar(10)
+  whatsapp_contact     String               @db.VarChar(10)
   locality             String
-  shipping_cost        Decimal   @db.Decimal(65, 30)
+  shipping_cost        Decimal              @db.Decimal(65, 30)
   contact_name         String
-  number_contact       String    @db.VarChar(10)
+  number_contact       String               @db.VarChar(10)
   social_media_contact String?
   image_profile        String?
   image_cover          String?
@@ -39,11 +39,25 @@ model User_bussiness {
   description          String?
   open_hours           String?
   close_hours          String?
-  rating               Int?
+  rating               Rating[]
+  qualification        Int?                 @default(0) @db.SmallInt
   delivery_time        String?
   products             Product[]
+  sectionStore         Section[]
+  sections             ProductsOnSections[]
 
   @@map("user_bussiness")
+}
+
+model Rating {
+  id                Int            @id @default(autoincrement())
+  rating            Int            @db.SmallInt
+  user              String         @db.VarChar(255)
+  user_bussiness_id Int
+  user_bussiness    User_bussiness @relation(fields: [user_bussiness_id], references: [id])
+
+  @@unique([user, user_bussiness_id])
+  @@map("rating")
 }
 
 model Product {
@@ -56,5 +70,29 @@ model Product {
   user_bussiness    User_bussiness @relation(fields: [user_bussiness_id], references: [id])
   user_bussiness_id Int
 
+  sections ProductsOnSections[]
+
   @@map("product")
+}
+
+model Section {
+  id                Int                  @id @default(autoincrement())
+  name              String               @db.VarChar(255)
+  user_bussiness_id Int
+  user_bussiness    User_bussiness       @relation(fields: [user_bussiness_id], references: [id])
+  products          ProductsOnSections[]
+
+  @@map("section")
+}
+
+model ProductsOnSections {
+  product_id Int
+  section_id Int
+  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  section    Section @relation(fields: [section_id], references: [id])
+
+  user_bussiness_id Int
+  user_bussiness    User_bussiness @relation(fields: [user_bussiness_id], references: [id])
+
+  @@id([product_id, section_id])
 }

@@ -19,7 +19,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async getJwtToken(payload: { email: string; roles: Role[] }) {
+  async getJwtToken(payload: { id: Number; email: string; roles: Role[] }) {
     return await this.jwtService.signAsync(payload, {
       secret: jwtConstants.secret,
       expiresIn: '60s',
@@ -54,7 +54,7 @@ export class AuthService {
       );
     }
 
-    const payload = { email: user.email, roles: user.roles as Role[] };
+    const payload = { email: user.email, roles: user.roles as Role[], id: user.id };
     const token = await this.getJwtToken(payload);
     const refreshToken = await this.getRefreshJwtToken(payload);
 
@@ -103,7 +103,7 @@ export class AuthService {
         description:null,
         open_hours:null,
         close_hours:null,
-        rating:null,
+        qualification:1,
         delivery_time:null
       });
 
