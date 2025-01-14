@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { CreateUserBussinessDto } from './dto/create-user-bussiness.dto';
 import { PrismaService } from 'src/prisma.service';
 import { User_bussiness } from '@prisma/client';
@@ -46,6 +46,9 @@ export class UserBussinessService {
   async search(query: string) {
 
     try {
+
+      
+
       const search = await this.prisma.user_bussiness.findMany({
         where: {
           OR: [
@@ -95,6 +98,10 @@ export class UserBussinessService {
 
   async getRating(user_bussiness_id: number, user_id: string) {
       
+    if (!user_id) {
+      throw new BadRequestException('User ID is missing');
+    }
+
       const rating = await this.prisma.rating.findUnique({ where: { user_user_bussiness_id:{
         user_bussiness_id: user_bussiness_id,
         user: user_id
