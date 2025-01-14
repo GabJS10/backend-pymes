@@ -254,50 +254,54 @@ getShippingCost(id: number) {
 
   async getOne(id: number) {
 
-    const select = {
-      id: true,
-      name: true,
-      email: true,
-      roles: true,
-      name_url: true,
-      holder: true,
-      whatsapp_contact: true,
-      locality: true,
-      shipping_cost: true,
-      contact_name: true,
-      number_contact: true,
-      social_media_contact: true,
-      category: true,
-      description: true,
-      close_hours: true,
-      open_hours: true,
-      rating: true,
-      delivery_time: true,
-      image_profile: true,
-      image_cover: true,
-    }
-
-    const data = await this.prisma.user_bussiness.findUnique(
-      {
-         where: { id },
-        include: {
-
-          sections: {
-            distinct: ["section_id"],
-            include:{
-              section: {
-                select:{
-                  name: true
+    try {
+      const select = {
+        id: true,
+        name: true,
+        email: true,
+        roles: true,
+        name_url: true,
+        holder: true,
+        whatsapp_contact: true,
+        locality: true,
+        shipping_cost: true,
+        contact_name: true,
+        number_contact: true,
+        social_media_contact: true,
+        category: true,
+        description: true,
+        close_hours: true,
+        open_hours: true,
+        rating: true,
+        delivery_time: true,
+        image_profile: true,
+        image_cover: true,
+      }
+  
+      const data = await this.prisma.user_bussiness.findUnique(
+        {
+           where: { id },
+          include: {
+  
+            sections: {
+              distinct: ["section_id"],
+              include:{
+                section: {
+                  select:{
+                    name: true
+                  }
                 }
               }
             }
           }
         }
-      }
-      );
-
-      data["password"] = "hidden";
-      return data
+        );
+  
+        data["password"] = "hidden";
+        return data
+    } catch (error) {
+      throw new HttpException("User bussines not found", 404);
+    }
   }
 
   async update(id: number, updateUserBussines: UpdateUserBussinessDto) {
