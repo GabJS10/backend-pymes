@@ -24,9 +24,11 @@ export class SectionsController {
     return this.sectionsService.assingProductsToSection(section_id,products_id,user_bussiness_id);
   }
 
-  @Get(":user_bussiness_id")
-  findAll(@Param('user_bussiness_id') user_bussiness_id:string) {
-    return this.sectionsService.findAll(parseInt(user_bussiness_id));
+  @Get()
+  @HttpCode(200)
+  @Auth([Role.USER_BUSSINESS])
+  findAll(@Req() request: Request) {
+    return this.sectionsService.findAll(parseInt(request["user"].id));
   }
 
   @Patch(':id')

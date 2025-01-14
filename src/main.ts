@@ -40,6 +40,6 @@ async function bootstrap() {
 
   app.use('/uploads', express.static(join(process.cwd(), 'uploads')));
 
-  await app.listen(4000);
+  await app.listen(process.env.PORT || 4000);
 }
 bootstrap();

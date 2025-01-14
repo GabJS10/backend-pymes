@@ -4,6 +4,7 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
+
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { Role } from 'src/common/enum/Roles.enum';
 import { LoginAuthDto } from './dto/login-auth.dto';
@@ -22,14 +23,14 @@ export class AuthService {
   async getJwtToken(payload: { id: Number; email: string; roles: Role[] }) {
     return await this.jwtService.signAsync(payload, {
       secret: jwtConstants.secret,
-      expiresIn: '60s',
+      expiresIn: '1h',
     });
   }
 
   async getRefreshJwtToken(payload: { email: string; roles: Role[] }) {
     return await this.jwtService.signAsync(payload, {
       secret: jwtConstants.secretRefresh,
-      expiresIn: '160s',
+      expiresIn: '2h',
     });
   }
 

@@ -21,13 +21,15 @@ export class ProductsController {
     
     const fileUrl = `${process.env.BACKEND_URL}/uploads/${file.filename}`
     
+    console.log("createProductDto.sections_id",createProductDto);
+    
     
     return this.productsService.create({
       ...createProductDto,
       image: fileUrl,
       user_bussiness_id: Number(request["user"].id),
       price: Number(createProductDto.price),
-      sections_id: createProductDto.sections_id.split(',').map((id) => Number(id))
+      sections_id: createProductDto.sections_id ? createProductDto.sections_id.split(',').map((id) => Number(id)) : []
     });
   }
 
