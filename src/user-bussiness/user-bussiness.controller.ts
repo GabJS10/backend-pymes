@@ -79,6 +79,10 @@ export class UserBussinessController {
 @Patch("updateRating/:id")
 @HttpCode(HttpStatus.OK)
 async updateRating(@Param("id") id: string, @Req() request: RequestExpress,@Body() body: { rating: number }) {
+  console.log("probando",request.cookies["user_id"],parseInt(id),body.rating);
+
+  
+  
   return this.userBussinessService.updateRating(parseInt(id), body.rating, request.cookies["user_id"]);
 }
 

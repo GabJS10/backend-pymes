@@ -119,6 +119,10 @@ export class UserBussinessService {
   async updateRating(id: number, rating: number, user_id: string) {
     try {
 
+      if (!user_id) {
+        throw new BadRequestException('User ID is missing');
+      }
+
       if (rating < 1 || rating > 5) {
         throw new HttpException("Rating must be between 0 and 5", 400);
         
